@@ -49,4 +49,9 @@ BOOK* add_book(void);
 
 int book_check_double(char *);
 
+void rearrange(BOOK *);
+
+void Print_bok_list(void);
+
+
 #endif /* header_h */
