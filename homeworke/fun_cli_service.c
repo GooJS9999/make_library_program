@@ -9,7 +9,7 @@ void Print_cli_service(void)
 {
     enum mod m;
     
-    printf(">> 회원 메뉴 <<\n\n");
+    printf("\n>> 회원 메뉴 <<\n\n");
     printf("1.도서명 검색  2.대여 목록\n");
     printf("3.개인정보수정  4.회원 탈퇴\n");
     printf("5.로그아웃  6.프로그램 종료\n\n");
