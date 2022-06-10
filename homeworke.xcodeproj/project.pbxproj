@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1165711528269B1200785836 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 1165711428269B1200785836 /* main.c */; };
+		118B08892850AD2B00905AF7 /* fun.c in Sources */ = {isa = PBXBuildFile; fileRef = 118B08882850AD2B00905AF7 /* fun.c */; };
+		118B088B2850AEF100905AF7 /* fun_cli.c in Sources */ = {isa = PBXBuildFile; fileRef = 118B088A2850AEF100905AF7 /* fun_cli.c */; };
+		118B088D285356CB00905AF7 /* fun_cli_service.c in Sources */ = {isa = PBXBuildFile; fileRef = 118B088C285356CB00905AF7 /* fun_cli_service.c */; };
+		118B088F28538D6800905AF7 /* fun_adm_service.c in Sources */ = {isa = PBXBuildFile; fileRef = 118B088E28538D6800905AF7 /* fun_adm_service.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,11 @@
 /* Begin PBXFileReference section */
 		1165711128269B1200785836 /* homeworke */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = homeworke; sourceTree = BUILT_PRODUCTS_DIR; };
 		1165711428269B1200785836 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		118B08872850ABAF00905AF7 /* header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = "<group>"; };
+		118B08882850AD2B00905AF7 /* fun.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fun.c; sourceTree = "<group>"; };
+		118B088A2850AEF100905AF7 /* fun_cli.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fun_cli.c; sourceTree = "<group>"; };
+		118B088C285356CB00905AF7 /* fun_cli_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fun_cli_service.c; sourceTree = "<group>"; };
+		118B088E28538D6800905AF7 /* fun_adm_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fun_adm_service.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +67,11 @@
 			isa = PBXGroup;
 			children = (
 				1165711428269B1200785836 /* main.c */,
+				118B08872850ABAF00905AF7 /* header.h */,
+				118B08882850AD2B00905AF7 /* fun.c */,
+				118B088A2850AEF100905AF7 /* fun_cli.c */,
+				118B088C285356CB00905AF7 /* fun_cli_service.c */,
+				118B088E28538D6800905AF7 /* fun_adm_service.c */,
 			);
 			path = homeworke;
 			sourceTree = "<group>";
@@ -120,6 +134,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1165711528269B1200785836 /* main.c in Sources */,
+				118B08892850AD2B00905AF7 /* fun.c in Sources */,
+				118B088D285356CB00905AF7 /* fun_cli_service.c in Sources */,
+				118B088F28538D6800905AF7 /* fun_adm_service.c in Sources */,
+				118B088B2850AEF100905AF7 /* fun_cli.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
