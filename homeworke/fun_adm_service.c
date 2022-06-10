@@ -136,7 +136,12 @@ void rearrange(BOOK *s)
         bok[bok_size-1-j] = bok[bok_size-2-j];
     }
     bok[i] = s;
-    printf("%d", i);
+    bok[i]->book_number = bok[i-1]->book_number+1;
+
+    for(j=i+1;j<bok_size;j++)//?
+    {
+        bok[j]->book_number+=1;
+    }
     
     
     bok_size++;
