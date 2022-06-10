@@ -3,12 +3,10 @@
 enum mod {book_add=1, book_del, book_rental, book_return, book_serch, member_list, logout, program_end};
 
 extern CLIENT **cli;
-extern int size;
+extern int cli_size;
 
 extern int bok_size;
 extern BOOK **bok;
-
-BOOK **bok;
 
 
 void Print_adm_service(void)
@@ -40,6 +38,15 @@ void Print_adm_service(void)
             }
             bok[bok_size-1] = (BOOK*)malloc(sizeof(BOOK));
             temp = add_book();
+             if(book_check_double(temp->book_name))
+             {
+               // 도서번호 순서 재정렬.
+             }
+             else
+             {
+                 temp->book_number = 1000000+(bok_size-1);
+             }
+             
             bok[bok_size-1] = temp;
             bok_size++;
             
@@ -88,6 +95,21 @@ BOOK* add_book(void)
     
     return temp;
 }
+
+int book_check_double(char *s)
+{
+    int i;
+    
+    for(i=0;i<bok_size-1;i++)
+    {
+        if(strcmp(bok[i]->book_name,s) == 0)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 
 
 /*

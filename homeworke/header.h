@@ -19,7 +19,7 @@ typedef struct {
     char book_author[20];
     char ISBN[20];
     char collection[20];
-    int book_number[7];
+    int book_number;
 } BOOK;
 
 
@@ -46,5 +46,7 @@ void Print_cli_service(void);
 void Print_adm_service(void);
 
 BOOK* add_book(void);
+
+int book_check_double(char *);
 
 #endif /* header_h */
