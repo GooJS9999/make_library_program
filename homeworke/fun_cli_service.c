@@ -3,7 +3,7 @@
 enum mod {book_ser=1, my_book, Edit_info,Withdrawal, logout, program_end};
 
 extern CLIENT **cli;
-extern int size;
+extern int cli_size;
 
 void Print_cli_service(void)
 {

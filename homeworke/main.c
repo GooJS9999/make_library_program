@@ -1,9 +1,12 @@
 #include "header.h"
 
 enum manu {signup = 1, login = 2, ex = 3};
-int size = 1;
-
+int cli_size = 1;
 CLIENT **cli;
+
+int bok_size = 1;
+BOOK **bok;
+
 
 int main()
 {
@@ -21,18 +24,18 @@ int main()
         {
             case signup:
                 
-                if(size == 1)
+                if(cli_size == 1)
                 {
                     cli = (CLIENT**)malloc(sizeof(CLIENT*));
                 }
                 else
                 {
-                    cli = (CLIENT**)realloc(cli, size * sizeof(CLIENT*));
+                    cli = (CLIENT**)realloc(cli, cli_size * sizeof(CLIENT*));
                 }
-                cli[size-1] = (CLIENT*)malloc(sizeof(CLIENT));
+                cli[cli_size-1] = (CLIENT*)malloc(sizeof(CLIENT));
                 temp = RegClient();
-                cli[size-1] = temp;
-                size++;
+                cli[cli_size-1] = temp;
+                cli_size++;
                 
  //               print_cli(size);
                 

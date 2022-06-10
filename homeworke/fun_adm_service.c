@@ -5,8 +5,16 @@ enum mod {book_add=1, book_del, book_rental, book_return, book_serch, member_lis
 extern CLIENT **cli;
 extern int size;
 
+extern int bok_size;
+extern BOOK **bok;
+
+BOOK **bok;
+
+
 void Print_adm_service(void)
 {
+    BOOK *temp = (BOOK*)malloc(sizeof(temp));
+
     enum mod m;
     
     printf("\n>> 관리자 메뉴 <<\n\n");
@@ -21,6 +29,21 @@ void Print_adm_service(void)
     switch(m)
     {
         case book_add:
+            
+            if(bok_size == 1)
+            {
+                bok = (BOOK**)malloc(sizeof(BOOK*));
+            }
+            else
+            {
+                bok = (BOOK**)realloc(bok, bok_size * sizeof(BOOK*));
+            }
+            bok[bok_size-1] = (BOOK*)malloc(sizeof(BOOK));
+            temp = add_book();
+            bok[bok_size-1] = temp;
+            bok_size++;
+            
+            
             break;
         case book_del:
             break;
@@ -42,3 +65,36 @@ void Print_adm_service(void)
     
     
 }
+
+BOOK* add_book(void)
+{
+    BOOK *temp = (BOOK*)malloc(sizeof(temp));
+    
+    printf("도서명 : ");
+    scanf("%s", temp->book_name);
+
+    printf("출판사 : ");
+    scanf("%s", temp->book_publisher);
+
+    printf("저자명 : ");
+    scanf("%s", temp->book_author);
+
+    printf("ISBM : ");
+    scanf("%s", temp->ISBN);
+    
+    printf("소장처 : ");
+    scanf("%s", temp->collection);
+    
+    
+    return temp;
+}
+
+
+/*
+ char book_name[20];
+ char book_publisher[20];
+ char book_author[20];
+ char ISBN[20];
+ char collection[20];
+ int book_number[7];
+ */

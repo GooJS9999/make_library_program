@@ -1,7 +1,7 @@
 #include "header.h"
 
 extern CLIENT **cli;
-extern int size;
+extern int cli_size;
 
 CLIENT* RegClient(void)
 {
@@ -40,7 +40,7 @@ CLIENT* RegClient(void)
 int check_double(char *s)
 {
     int i;
-    for(i=0;i<size-1;i++)
+    for(i=0;i<cli_size-1;i++)
     {
         if(strcmp(cli[i]->sn, s) == 0)
         {
@@ -71,7 +71,7 @@ void Login(void)
     printf("아이디를 입력하세요 : ");
     scanf("%s", id);
     
-    for(i=0;i<size-1;i++)
+    for(i=0;i<cli_size-1;i++)
     {
         if(strcmp(cli[i]->sn,id) == 0)
         {
