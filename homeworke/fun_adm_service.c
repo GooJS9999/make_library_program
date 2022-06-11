@@ -37,8 +37,10 @@ void Print_adm_service(void)
                 {
                     bok = (BOOK**)realloc(bok, bok_size * sizeof(BOOK*));
                 }
+                
                 bok[bok_size-1] = (BOOK*)malloc(sizeof(BOOK));
                 temp = add_book();
+                
                  if(book_check_double(temp->book_name))
                  {
                      printf("중복된 책 입니다.\n");
@@ -49,15 +51,15 @@ void Print_adm_service(void)
                      printf("중복된 책이 아닙니다.\n");
                      temp->book_number = 1000000+(bok_size-1);
                      bok[bok_size-1] = temp;
-                     bok_size++;
                  }
-                 
-                
+                bok_size++;
                 break;
             case book_del:
-                Print_bok_list();
+                del_book();
                 break;
             case book_rental:
+                Print_bok_list();
+
                 break;
             case book_return:
                 break;
@@ -78,6 +80,7 @@ void Print_adm_service(void)
 
 BOOK* add_book(void)
 {
+
     BOOK *temp = (BOOK*)malloc(sizeof(temp));
     
     printf("도서명 : ");
@@ -88,16 +91,44 @@ BOOK* add_book(void)
 
     printf("저자명 : ");
     scanf("%s", temp->book_author);
-
+    
+    while(1)
+    {
     printf("ISBM : ");
     scanf("%s", temp->ISBN);
+        
+        if(strlen(temp->ISBN) == 13 && is_number(temp->ISBN))
+        {
+            break;
+        }
+        else
+        {
+            printf("13개의 정수를 입력하세요.");
+        }
+    }
     
     printf("소장처 : ");
     scanf("%s", temp->collection);
     
+    temp->YorN = 'Y';
     
     return temp;
 }
+
+int is_number(char *s)
+{
+    int i;
+    for(i=0;i<13;i++)
+    {
+        if( (s[i] < 0+'0') || (s[i] > 9+'0'))
+        {
+            return 0;
+        }
+    }
+    
+    return 1;
+}
+
 
 int book_check_double(char *s)
 {
@@ -143,8 +174,6 @@ void rearrange(BOOK *s)
         bok[j]->book_number+=1;
     }
     
-    
-    bok_size++;
 }
 
 void Print_bok_list(void)
@@ -152,11 +181,173 @@ void Print_bok_list(void)
     int i;
     for(i=0;i<bok_size-1;i++)
     {
-        printf("도서명:%s 출판사:%s 책저자:%s ISBN:%s 저장소:%s 책넘버:%d\n", bok[i]->book_name, bok[i]->book_publisher, bok[i]->book_author, bok[i]->ISBN, bok[i]->collection, bok[i]->book_number);
+        printf("도서명:%4s 출판사:%4s 책저자:%3s ISBN:%13s 저장소:%5s 책넘버:%4d\n", bok[i]->book_name, bok[i]->book_publisher, bok[i]->book_author, bok[i]->ISBN, bok[i]->collection, bok[i]->book_number);
         
     }
     
 }
+
+void del_book(void)
+{
+    int i;
+    int input;
+    int mod =0, mod_YorN = 0, del_mod = 0;
+    char serch[20];
+    
+    int del_num;
+    
+    printf("\n>>도서 삭제<<.\n\n");
+    printf("1.도서명 검색.    2.ISBN 검색\n");
+    printf("번호를 입력하세요 : ");
+    scanf("%d", &input);
+    
+    if(input == 1)
+    {
+        printf("도서명 입력 : ");
+        scanf("%s", serch);
+        printf("\n\n");
+        
+        for(i=0;i<bok_size-1;i++)
+        {
+            if(strcmp(bok[i]->book_name, serch) == 0)
+            {
+                
+                while(strcmp(bok[i]->book_name, serch) == 0)
+                {
+                    
+                    printf("도서명:%4s 출판사:%4s\n책저자:%3s ISBN:%13s\n저장소:%5s 책넘버:%4d\n", bok[i]->book_name, bok[i]->book_publisher, bok[i]->book_author, bok[i]->ISBN, bok[i]->collection, bok[i]->book_number);
+                    
+                    printf("\n삭제 가능 여부 : %c\n\n", bok[i]->YorN);
+                    mod = 1;
+                    
+                    if(bok[i]->YorN == 'Y')
+                    {
+                        mod_YorN = 1;
+                    }
+                    
+                    i++;
+                    if(i >= bok_size-1)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if(mod == 1 && mod_YorN == 1)
+        {
+            printf("도서 번호 입력 : ");
+            scanf("%d", &del_num);
+            
+            
+            for(i=0;i<bok_size-1;i++)
+            {
+                if(strcmp(bok[i]->book_name, serch) == 0)
+                {
+                    if(del_num == bok[i]->book_number && bok[i]->YorN == 'Y')
+                    {
+                        printf("삭제 함수\n");
+                        //삭제 함수.
+                        del_mod = 1;
+                    }
+                    else if(del_num == bok[i]->book_number && bok[i]->YorN == 'N')
+                    {
+                        printf("삭제불가능한 도서 입니다..\n");
+                        del_mod = 1;
+                    }
+                }
+            }
+            
+            if(del_mod == 0)
+            {
+                printf("도서번호를 잘못 입력하였습니다.\n");
+            }
+            
+            
+        }
+        else
+        {
+            printf("\n삭제 가능한 도서가 없습니다.\n");
+        }
+        
+        
+    }
+    else if(input == 2)
+    {
+        printf("ISBN 입력 : ");
+        scanf("%s", serch);
+        printf("\n\n");
+        
+        for(i=0;i<bok_size-1;i++)
+        {
+            if(strcmp(bok[i]->ISBN, serch) == 0)
+            {
+                
+                while(strcmp(bok[i]->ISBN, serch) == 0)
+                {
+                    
+                    printf("도서명:%4s 출판사:%4s\n책저자:%3s ISBN:%13s\n저장소:%5s 책넘버:%4d\n", bok[i]->book_name, bok[i]->book_publisher, bok[i]->book_author, bok[i]->ISBN, bok[i]->collection, bok[i]->book_number);
+                    
+                    printf("\n삭제 가능 여부 : %c\n\n", bok[i]->YorN);
+                    mod = 1;
+                    
+                    if(bok[i]->YorN == 'Y')
+                    {
+                        mod_YorN = 1;
+                    }
+                    
+                    i++;
+                    if(i >= bok_size-1)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if(mod == 1 && mod_YorN == 1)
+        {
+            printf("도서 번호 입력 : ");
+            scanf("%d", &del_num);
+            
+            
+            for(i=0;i<bok_size-1;i++)
+            {
+                if(strcmp(bok[i]->book_name, serch) == 0)
+                {
+                    if(del_num == bok[i]->book_number && bok[i]->YorN == 'Y')
+                    {
+                        printf("삭제 함수\n");
+                        //삭제 함수.
+                        del_mod = 1;
+                    }
+                    else if(del_num == bok[i]->book_number && bok[i]->YorN == 'N')
+                    {
+                        printf("삭제불가능한 도서 입니다..\n");
+                        del_mod = 1;
+                    }
+                }
+            }
+            
+            if(del_mod == 0)
+            {
+                printf("도서번호를 잘못 입력하였습니다.\n");
+            }
+            
+            
+        }
+        else
+        {
+            printf("\n삭제 가능한 도서가 없습니다.\n");
+        }
+
+    }
+    else
+    {
+        printf("잘못 입력 하였습니다.\n");
+    }
+}
+
 
 
 

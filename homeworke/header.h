@@ -17,9 +17,10 @@ typedef struct {
     char book_name[20];
     char book_publisher[20];
     char book_author[20];
-    char ISBN[20];
+    char ISBN[14];
     char collection[20];
     int book_number;
+    char YorN;
 } BOOK;
 
 
@@ -53,5 +54,8 @@ void rearrange(BOOK *);
 
 void Print_bok_list(void);
 
+int is_number(char *);
+
+void del_book(void);
 
 #endif /* header_h */
