@@ -27,7 +27,6 @@ typedef struct {
 int Print_front(void);
 
 CLIENT* RegClient(void);
-void print_cli(int);
 
 
 void Login(void);
@@ -57,5 +56,8 @@ void Print_bok_list(void);
 int is_number(char *);
 
 void del_book(void);
+
+void print_cli(void);
+
 
 #endif /* header_h */

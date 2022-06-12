@@ -51,10 +51,10 @@ int check_double(char *s)
     return 1;
 }
 
-void print_cli(int size)
+void print_cli(void)
 {
     int i;
-    for(i=0;i<size-1;i++)
+    for(i=0;i<cli_size-1;i++)
     {
         printf("%s %s %s %s %s\n", cli[i]->sn, cli[i]->pn, cli[i]->name, cli[i]->add, cli[i]->pw);
     }

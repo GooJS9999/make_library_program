@@ -1,6 +1,9 @@
 #include "header.h"
 
 enum mod {book_add=1, book_del, book_rental, book_return, book_serch, member_list, logout, program_end};
+enum mod_member_list {name_serch = 1, student_number_serch, every_serch, back};
+
+
 
 extern CLIENT **cli;
 extern int cli_size;
@@ -66,18 +69,26 @@ void Print_adm_service(void)
             case book_serch:
                 break;
             case member_list:
+                
+                print_cli();
+                
+                
                 break;
             case logout:
+                return;
                 break;
             case program_end:
+                exit(0);
                 break;
             default:
+                printf("잘못 입력하였습니다. 다시 입력하세요.\n");
                 break;
         }
     }
     
 }
 
+// 도서 등록
 BOOK* add_book(void)
 {
 
@@ -115,6 +126,7 @@ BOOK* add_book(void)
     return temp;
 }
 
+// 문자열이 모두 정수인지 체크
 int is_number(char *s)
 {
     int i;
@@ -129,7 +141,7 @@ int is_number(char *s)
     return 1;
 }
 
-
+// 도서 중복 체크
 int book_check_double(char *s)
 {
     int i;
@@ -144,6 +156,7 @@ int book_check_double(char *s)
     return 0;
 }
 
+// 도서 정렬
 void rearrange(BOOK *s)
 {
     int i,j;
@@ -187,9 +200,10 @@ void Print_bok_list(void)
     
 }
 
+// 2.도서 삭제
 void del_book(void)
 {
-    int i;
+    int i, j;
     int input;
     int mod =0, mod_YorN = 0, del_mod = 0;
     char serch[20];
@@ -234,42 +248,6 @@ void del_book(void)
             }
         }
         
-        if(mod == 1 && mod_YorN == 1)
-        {
-            printf("도서 번호 입력 : ");
-            scanf("%d", &del_num);
-            
-            
-            for(i=0;i<bok_size-1;i++)
-            {
-                if(strcmp(bok[i]->book_name, serch) == 0)
-                {
-                    if(del_num == bok[i]->book_number && bok[i]->YorN == 'Y')
-                    {
-                        printf("삭제 함수\n");
-                        //삭제 함수.
-                        del_mod = 1;
-                    }
-                    else if(del_num == bok[i]->book_number && bok[i]->YorN == 'N')
-                    {
-                        printf("삭제불가능한 도서 입니다..\n");
-                        del_mod = 1;
-                    }
-                }
-            }
-            
-            if(del_mod == 0)
-            {
-                printf("도서번호를 잘못 입력하였습니다.\n");
-            }
-            
-            
-        }
-        else
-        {
-            printf("\n삭제 가능한 도서가 없습니다.\n");
-        }
-        
         
     }
     else if(input == 2)
@@ -304,48 +282,99 @@ void del_book(void)
                 }
             }
         }
-        
-        if(mod == 1 && mod_YorN == 1)
-        {
-            printf("도서 번호 입력 : ");
-            scanf("%d", &del_num);
-            
-            
-            for(i=0;i<bok_size-1;i++)
-            {
-                if(strcmp(bok[i]->book_name, serch) == 0)
-                {
-                    if(del_num == bok[i]->book_number && bok[i]->YorN == 'Y')
-                    {
-                        printf("삭제 함수\n");
-                        //삭제 함수.
-                        del_mod = 1;
-                    }
-                    else if(del_num == bok[i]->book_number && bok[i]->YorN == 'N')
-                    {
-                        printf("삭제불가능한 도서 입니다..\n");
-                        del_mod = 1;
-                    }
-                }
-            }
-            
-            if(del_mod == 0)
-            {
-                printf("도서번호를 잘못 입력하였습니다.\n");
-            }
-            
-            
-        }
-        else
-        {
-            printf("\n삭제 가능한 도서가 없습니다.\n");
-        }
 
     }
     else
     {
         printf("잘못 입력 하였습니다.\n");
     }
+    
+    if(mod == 1 && mod_YorN == 1)
+    {
+        printf("도서 번호 입력 : ");
+        scanf("%d", &del_num);
+        
+        
+        for(i=0;i<bok_size-1;i++)
+        {
+            if(strcmp(bok[i]->book_name, serch) == 0)
+            {
+                if(del_num == bok[i]->book_number && bok[i]->YorN == 'Y')
+                {
+
+                    for(j=0;j<bok_size-2;j++)
+                    {
+                        bok[j] = bok[j+1];
+                        bok[j]->book_number -= 1;
+                    }
+                    
+                    bok_size--;
+                    bok = (BOOK**)realloc(bok, bok_size * sizeof(BOOK*));
+                    
+                    
+                    del_mod = 1;
+                }
+                else if(del_num == bok[i]->book_number && bok[i]->YorN == 'N')
+                {
+                    printf("삭제불가능한 도서 입니다..\n");
+                    del_mod = 1;
+                }
+            }
+        }
+        
+        if(del_mod == 0)
+        {
+            printf("도서번호를 잘못 입력하였습니다.\n");
+        }
+        
+        
+    }
+    else
+    {
+        printf("\n삭제 가능한 도서가 없습니다.\n");
+    }
+    
+    
+}
+
+// 6.회원 목록
+void print_cli(void)
+{
+    enum mod_member_list m;
+    
+    while(1)
+    {
+        printf("\n\n>>회원 목록<<\n\n");
+        printf("1.이름 검색    2.학번 검색\n");
+        printf("3.전체 검색    4.이전 메뉴\n");
+        
+        printf("번호를 입력하세요 : ");
+        scanf("%d", &m);
+        
+        switch(m)
+        {
+            case name_serch:
+                break;
+            case student_number_serch:
+                break;
+            case every_serch:
+                break;
+            case back:
+                break;
+
+            default:
+                printf("잘못입력하였습니다. 다시 입력하세요\n");
+                break;
+                
+        }
+    }
+    /*
+    int i;
+    for(i=0;i<cli_size-1;i++)
+    {
+        printf("%s %s %s %s %s\n", cli[i]->sn, cli[i]->pn, cli[i]->name, cli[i]->add, cli[i]->pw);
+    }
+    */
 }
 
 
