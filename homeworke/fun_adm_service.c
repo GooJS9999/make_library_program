@@ -70,7 +70,7 @@ void Print_adm_service(void)
                 break;
             case member_list:
                 
-                print_cli();
+                //print_cli();
                 
                 
                 break;
@@ -338,7 +338,7 @@ void del_book(void)
 }
 
 // 6.회원 목록
-void print_cli(void)
+void Print_cli(void)
 {
     enum mod_member_list m;
     
@@ -368,13 +368,7 @@ void print_cli(void)
                 
         }
     }
-    /*
-    int i;
-    for(i=0;i<cli_size-1;i++)
-    {
-        printf("%s %s %s %s %s\n", cli[i]->sn, cli[i]->pn, cli[i]->name, cli[i]->add, cli[i]->pw);
-    }
-    */
+
 }
 
 

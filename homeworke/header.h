@@ -57,7 +57,7 @@ int is_number(char *);
 
 void del_book(void);
 
-void print_cli(void);
+void Print_cli(void);
 
 
 #endif /* header_h */
