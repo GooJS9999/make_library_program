@@ -350,7 +350,7 @@ void print_cli(void)
         
         printf("번호를 입력하세요 : ");
         scanf("%d", &m);
-        
+        //ㅁㄴㅇㄹㄴㅁㅇㄹ11111
         switch(m)
         {
             case name_serch:
