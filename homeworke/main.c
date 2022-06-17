@@ -8,6 +8,10 @@ int bok_size = 1;
 BOOK **bok;
 
 
+int brw_size = 1;
+BORROW **brw;
+
+
 int main()
 {
     enum manu input;

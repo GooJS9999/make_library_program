@@ -11,6 +11,12 @@ extern int cli_size;
 extern int bok_size;
 extern BOOK **bok;
 
+extern int brw_size;
+extern BORROW **brw;
+
+
+
+
 
 void Print_adm_service(void)
 {
@@ -61,17 +67,16 @@ void Print_adm_service(void)
                 del_book();
                 break;
             case book_rental:
-                Print_bok_list();
-
+                rental();
                 break;
             case book_return:
                 break;
             case book_serch:
+                Print_bok_list();
+
                 break;
             case member_list:
-                
-                //print_cli();
-                
+                Print_cli();
                 
                 break;
             case logout:
@@ -91,7 +96,9 @@ void Print_adm_service(void)
 // 도서 등록
 BOOK* add_book(void)
 {
-
+    int i;
+    int mod = 0;
+    
     BOOK *temp = (BOOK*)malloc(sizeof(temp));
     
     printf("도서명 : ");
@@ -103,20 +110,41 @@ BOOK* add_book(void)
     printf("저자명 : ");
     scanf("%s", temp->book_author);
     
+    
+    //isbn이 같으면 이름도 같아야 한다.
     while(1)
     {
     printf("ISBM : ");
     scanf("%s", temp->ISBN);
         
+        mod = 0;
         if(strlen(temp->ISBN) == 13 && is_number(temp->ISBN))
         {
-            break;
+            for(i=0;i<bok_size-1;i++)
+            {
+                //중복이 있음.
+                if(strcmp(temp->ISBN, bok[i]->ISBN) == 0)
+                {
+                    //이름이 같나?
+                    if(strcmp(bok[i]->book_name, temp->book_name) != 0)
+                    {
+                        printf("같은 ISBN코드의 책과 이름이 다릅니다.\n");
+                        mod = 1;
+                    }
+
+                }
+            }
         }
         else
         {
             printf("13개의 정수를 입력하세요.");
+            continue;
         }
+        
+        if(mod == 0)break;
+        
     }
+    
     
     printf("소장처 : ");
     scanf("%s", temp->collection);
@@ -155,7 +183,7 @@ int book_check_double(char *s)
     }
     return 0;
 }
-
+/*
 // 도서 정렬
 void rearrange(BOOK *s)
 {
@@ -167,6 +195,38 @@ void rearrange(BOOK *s)
         if(strcmp(bok[i]->book_name, s->book_name) == 0)
         {
             while(strcmp(bok[i]->book_name, s->book_name) == 0)
+            {
+                i++;
+                mod = 1;
+            }
+        }
+        if(mod)break;
+    }
+    
+    for(j=0; j<bok_size-1-i; j++)
+    {
+        bok[bok_size-1-j] = bok[bok_size-2-j];
+    }
+    bok[i] = s;
+    bok[i]->book_number = bok[i-1]->book_number+1;
+
+    for(j=i+1;j<bok_size;j++)//?
+    {
+        bok[j]->book_number+=1;
+    }
+    
+}
+*/
+void rearrange(BOOK *s)
+{
+    int i,j;
+    int mod = 0;
+    
+    for(i=0;i<bok_size-1;i++)
+    {
+        if(strcmp(bok[i]->ISBN, s->ISBN) == 0)
+        {
+            while(strcmp(bok[i]->ISBN, s->ISBN) == 0)
             {
                 i++;
                 mod = 1;
@@ -297,7 +357,7 @@ void del_book(void)
         
         for(i=0;i<bok_size-1;i++)
         {
-            if(strcmp(bok[i]->book_name, serch) == 0)
+            if(strcmp(bok[i]->book_name, serch) == 0 || strcmp(bok[i]->ISBN, serch) == 0)
             {
                 if(del_num == bok[i]->book_number && bok[i]->YorN == 'Y')
                 {
@@ -337,10 +397,179 @@ void del_book(void)
     
 }
 
+// 5.도서 대여
+void rental(void)
+{
+    int i;
+    int input;
+    
+    int temp_cli = 0;
+    
+    int del_num;
+    int mod =0, mod_YorN = 0, rent_mod = 0, bok_mod = 0;
+
+    char rental_sn[20];
+
+    char serch[20];
+    
+    printf("\n>>도서 대여<<.\n\n");
+    printf("1.도서명 검색.    2.ISBN 검색\n");
+    printf("번호를 입력하세요 : ");
+    scanf("%d", &input);
+    
+    if(input == 1)
+    {
+        printf("도서명 입력 : ");
+        scanf("%s", serch);
+        printf("\n\n");
+        
+        for(i=0;i<bok_size-1;i++)
+        {
+            if(strcmp(bok[i]->book_name, serch) == 0)
+            {
+                
+                while(strcmp(bok[i]->book_name, serch) == 0)
+                {
+                    
+                    printf("도서명:%4s 출판사:%4s\n책저자:%3s ISBN:%13s\n저장소:%5s 도서번호:%4d\n", bok[i]->book_name, bok[i]->book_publisher, bok[i]->book_author, bok[i]->ISBN, bok[i]->collection, bok[i]->book_number);
+                    
+                    printf("\n대여 가능 여부 : %c\n\n", bok[i]->YorN);
+                    mod = 1;
+                    
+                    if(bok[i]->YorN == 'Y')
+                    {
+                        mod_YorN = 1;
+                    }
+                    
+                    i++;
+                    if(i >= bok_size-1)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else if(input == 2)
+    {
+        printf("ISBN 입력 : ");
+        scanf("%s", serch);
+        printf("\n\n");
+        
+        for(i=0;i<bok_size-1;i++)
+        {
+            if(strcmp(bok[i]->ISBN, serch) == 0)
+            {
+                
+                while(strcmp(bok[i]->ISBN, serch) == 0)
+                {
+                    
+                    printf("도서명:%4s 출판사:%4s\n책저자:%3s ISBN:%13s\n저장소:%5s 책넘버:%4d\n", bok[i]->book_name, bok[i]->book_publisher, bok[i]->book_author, bok[i]->ISBN, bok[i]->collection, bok[i]->book_number);
+                    
+                    printf("\n대여 가능 여부 : %c\n\n", bok[i]->YorN);
+                    mod = 1;
+                    
+                    if(bok[i]->YorN == 'Y')
+                    {
+                        mod_YorN = 1;
+                    }
+                    
+                    i++;
+                    if(i >= bok_size-1)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+    else
+    {
+        printf("잘못 입력 하였습니다.\n");
+    }
+    
+    if(mod == 1 && mod_YorN == 1)
+    {
+        printf("학번 입력 : ");
+        scanf("%s", rental_sn);
+        
+        for(i=0;i<cli_size-1;i++)
+        {
+            if(strcmp(cli[i]->sn, rental_sn) == 0)
+            {
+                rent_mod = 1; //학생 있음
+                temp_cli = i;
+            }
+        }
+        
+        
+        
+        if(rent_mod == 1)
+        {
+            printf("도서 번호 입력 : ");
+            scanf("%d", &del_num);
+            for(i=0;i<bok_size-1;i++)
+            {
+                if(del_num == bok[i]->book_number )
+                {
+                    
+                    if(brw_size == 1)
+                    {
+                        brw = (BORROW**)malloc(sizeof(BORROW*));
+                    }
+                    else
+                    {
+                        brw = (BORROW**)realloc(brw, brw_size * sizeof(BORROW*));
+                    }
+                    
+                    brw[brw_size-1] = (BORROW*)malloc(sizeof(BORROW));
+                    strcpy(brw[brw_size-1]->borrow_sn, cli[temp_cli]->sn);
+                    brw[brw_size-1]->borrow_book_number = bok[i]->book_number;
+                    
+                    //반납일자 대여일자 표시
+                    
+                    brw_size++;
+                    
+                    
+                    //대여할때.
+                    bok[i]->YorN = 'N';
+                    cli[temp_cli]->YorN = 'Y';
+                    printf("도서를 대여하였습니다.\n");
+                    
+                    bok_mod = 1;
+                }
+                
+            }
+            
+            if(bok_mod == 0)
+            {
+                printf("해당 도서는 존재하지 않습니다.\n");
+            }
+            
+        }
+        else
+        {
+            printf("해당 학번의 학생은 존재하지 않습니다.\n");
+        }
+    }
+    else
+    {
+        printf("\n대여 가능한 도서가 없습니다.\n");
+    }
+    
+    
+    
+}
+
+
 // 6.회원 목록
 void Print_cli(void)
 {
+    int i;
     enum mod_member_list m;
+    char input[20];
+    
     
     while(1)
     {
@@ -354,12 +583,48 @@ void Print_cli(void)
         switch(m)
         {
             case name_serch:
+                
+                printf("이름을 입력하세요 : ");
+                scanf("%s", input);
+                
+                
+                for(i=0;i<cli_size-1;i++)
+                {
+                    if(strcmp(input, cli[i]->name) == 0)
+                    {
+                        printf("이름:%s 학번:%s\n주소:%s  전화번호:%s\n비밀번호:%s", cli[i]->name, cli[i]->sn, cli[i]->add, cli[i]->pn, cli[i]->pw);
+
+                    }
+                }
+                
                 break;
             case student_number_serch:
+                
+                printf("학번을 입력하세요 : ");
+                scanf("%s", input);
+                
+                
+                for(i=0;i<cli_size-1;i++)
+                {
+                    if(strcmp(input, cli[i]->sn) == 0)
+                    {
+                        printf("\n학번:%s  이름:%s\n주소:%s  전화번호:%s\n비밀번호:%s", cli[i]->sn ,cli[i]->name, cli[i]->add, cli[i]->pn, cli[i]->pw);
+                    }
+                }
+                
                 break;
+                
             case every_serch:
+                
+                for(i=0;i<cli_size-1;i++)
+                {
+                    printf("이름:%s 학번:%s\n주소:%s  전화번호:%s\n비밀번호:%s", cli[i]->name, cli[i]->sn, cli[i]->add, cli[i]->pn, cli[i]->pw);
+                }
+                
                 break;
+                
             case back:
+      //          return;
                 break;
 
             default:
@@ -371,6 +636,13 @@ void Print_cli(void)
 
 }
 
+/*
+ char sn[20];
+ char pw[20];
+ char name[20];
+ char add[20];
+ char pn[20];
+ */
 
 
 

@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+//isbn이 같으면 도서명이 같아야한다.
+
 
 typedef struct {
     char sn[20];
@@ -11,6 +15,7 @@ typedef struct {
     char name[20];
     char add[20];
     char pn[20];
+    char YorN;
 } CLIENT;
 
 typedef struct {
@@ -22,6 +27,13 @@ typedef struct {
     int book_number;
     char YorN;
 } BOOK;
+
+typedef struct {
+    char borrow_sn[20];
+    int borrow_book_number;
+    //대여일자
+    //반납일자
+} BORROW;
 
 
 int Print_front(void);
@@ -56,6 +68,8 @@ void Print_bok_list(void);
 int is_number(char *);
 
 void del_book(void);
+
+void rental(void);
 
 void Print_cli(void);
 
