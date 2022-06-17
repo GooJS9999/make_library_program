@@ -73,5 +73,9 @@ void rental(void);
 
 void Print_cli(void);
 
+void return_book(void);
+
+void serch_book(void);
+
 
 #endif /* header_h */
