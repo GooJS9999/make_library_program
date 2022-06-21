@@ -31,6 +31,7 @@ typedef struct {
 typedef struct {
     char borrow_sn[20];
     int borrow_book_number;
+    char borrow_book_name[20];
     //대여일자
     //반납일자
 } BORROW;
@@ -50,8 +51,11 @@ int person(int);
 int check_double(char *);
 
 //fun_cli_service
-void Print_cli_service(void);
+void Print_cli_service(char *); // 파라미터로 학번을 들고다님.
 
+void Print_borrow_book(char *);
+
+void edit_info(char *);
 
 
 //fun_adm_service

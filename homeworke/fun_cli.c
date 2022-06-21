@@ -3,6 +3,7 @@
 extern CLIENT **cli;
 extern int cli_size;
 
+
 CLIENT* RegClient(void)
 {
     CLIENT *temp = (CLIENT*)malloc(sizeof(temp));
@@ -129,7 +130,7 @@ int person(int i)
     
     if(strcmp(cli[i]->pw, pw) == 0)
     {
-        Print_cli_service();
+        Print_cli_service(cli[i]->sn); // 학번을 들고 다님. 파라미터로
 //        printf("회원 로그인 성공\n");
         return 1;
 

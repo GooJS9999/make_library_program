@@ -496,7 +496,8 @@ void rental(void)
                     brw[brw_size-1] = (BORROW*)malloc(sizeof(BORROW));
                     strcpy(brw[brw_size-1]->borrow_sn, cli[temp_cli]->sn);
                     brw[brw_size-1]->borrow_book_number = bok[i]->book_number;
-                    
+                    strcpy(brw[brw_size-1]->borrow_book_name,bok[i]->book_name);
+
                     //반납일자 대여일자 표시
                     
                     brw_size++;
@@ -533,12 +534,13 @@ void rental(void)
 }
 
 // 4.도서 반납
-
 void return_book(void)
 {
-    int i;
+    int i, j;
     int mod = 0;
+    int del_mod = 0;
     char serch[20];
+    int temp_bn;
     
     
     printf("학번을 입력하세요 : ");
@@ -558,17 +560,53 @@ void return_book(void)
         {
             if(strcmp(serch, brw[i]->borrow_sn) == 0)
             {
-                printf("도서번호 : %d 도서명 : %s\n", brw[i]->borrow_book_number, brw[i]->borrow_sn);
+                printf("도서번호 : %d 도서명 : %s\n", brw[i]->borrow_book_number, brw[i]->borrow_book_name); // 잘못됌
             }
         }
+        
+        printf("반납할 도서번호를 입력하세요 : ");
+        scanf("%d", &temp_bn);
+        
+        for(i=0;i<brw_size-1;i++)
+        {
+            if(temp_bn == brw[i]->borrow_book_number)
+            {
+                //해당 대여 리스트 삭제
+                for(j=i; j<brw_size-2; j++)
+                {
+                    brw[j] = brw[j+1];
+                }
+                
+                brw_size--;
+                
+                brw = (BORROW**)realloc(brw,brw_size*sizeof(BORROW*));
+                
+                del_mod = 1;
+            }
+        }
+        
+        for(i=0;i<bok_size-1;i++)
+        {
+            if(temp_bn == bok[i]->book_number)
+            {
+                bok[i]->YorN = 'Y';
+            }
+        }
+        
+        if(del_mod == 0)
+        {
+            printf("해당 도서번호가 없습니다.\n");
+        }
+        
+        
     }
     else
     {
         printf("헤당 학번의 학생은 없습니다.\n");
     }
     
-    // 도서 반납
 }
+
 
 // 5.도서 검색
 void serch_book(void)
@@ -686,7 +724,7 @@ void Print_cli(void)
                 {
                     if(strcmp(input, cli[i]->name) == 0)
                     {
-                        printf("이름:%s 학번:%s\n주소:%s  전화번호:%s\n비밀번호:%s", cli[i]->name, cli[i]->sn, cli[i]->add, cli[i]->pn, cli[i]->pw);
+                        printf("이름:%s 학번:%s\n주소:%s  전화번호:%s\n비밀번호:%s\n\n", cli[i]->name, cli[i]->sn, cli[i]->add, cli[i]->pn, cli[i]->pw);
 
                     }
                 }
